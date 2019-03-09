@@ -21,3 +21,4 @@ WORKDIR /home/sd
 
 COPY --from=target /build/target/*jar-with-dependencies.jar sd19-tp1.jar
 
+COPY sd2019-tp1.props /
