@@ -10,8 +10,7 @@ import java.nio.file.Files;
 
 import microgram.api.java.Media;
 import microgram.api.java.Result;
-import utils.Base58;
-import utils.MD5;
+import utils.Hash;
 
 public class JavaMedia implements Media {
 
@@ -28,7 +27,7 @@ public class JavaMedia implements Media {
 	@Override
 	public Result<String> upload(byte[] bytes) {
 		try {
-			String id = Base58.encode(MD5.digest(bytes));
+			String id = Hash.of(bytes);
 			File filename = new File(ROOT_DIR + id + MEDIA_EXTENSION);
 			Files.write(filename.toPath(), bytes);
 			return ok(baseUri + "/" + id);
