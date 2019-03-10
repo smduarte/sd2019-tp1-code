@@ -23,7 +23,7 @@ abstract class SoapClient {
 		return uri.toString();
 	}
 
-	static interface MicrogramResutSupplier<T> {
+	static interface MicrogramResultSupplier<T> {
 		T get() throws MicrogramException;
 	}
 	
@@ -31,7 +31,7 @@ abstract class SoapClient {
 		void run() throws MicrogramException;
 	}
 	
-	protected <T> Result<T> tryCatchResult( MicrogramResutSupplier<T> sup ) {
+	protected <T> Result<T> tryCatchResult( MicrogramResultSupplier<T> sup ) {
 		try {
 			T result = sup.get();
 			return ok( result );
