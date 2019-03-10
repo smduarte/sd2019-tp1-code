@@ -3,16 +3,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sd2019</groupId>
-	<artifactId>sd19-tp1</artifactId>
+	<artifactId>sd19-tp1-code</artifactId>
 	<version>1.0</version>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<properties>
+		<googledrive>/Volumes/GoogleDrive/My Drive/CAMPUS-ROOT/SD2019/jupyter/public-html</googledrive>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<authors>xxxxx-yyyyy</authors>
 		<dockerfile-maven-version>1.4.10</dockerfile-maven-version>
 	</properties>
 	<repositories>
 		<repository>
-			<id>sd2019-tp1-api-mvn-repo</id>
+			<id>sd19</id>
 			<url>http://asc.di.fct.unl.pt/sd/mvn-repo/</url>
 			<snapshots>
 				<enabled>true</enabled>
@@ -20,6 +21,12 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	<distributionManagement>
+        <repository>
+            <id>sd19</id>
+            <url>file://${googledrive}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -33,14 +40,24 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
@@ -59,9 +76,6 @@
 				<configuration>
 					<contextDirectory>${project.basedir}</contextDirectory>
 					<repository>sd19-tp1-${authors}</repository>
-					<buildArgs>
-						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-					</buildArgs>
 				</configuration>
 			</plugin>
 		</plugins>
