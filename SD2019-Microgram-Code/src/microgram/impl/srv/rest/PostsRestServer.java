@@ -20,7 +20,7 @@ public class PostsRestServer {
 	}
 	
 	public static final int PORT = 7777;
-	public static final String SERVICE = "Microgram";
+	public static final String SERVICE = "Microgram-Posts";
 	public static String SERVER_BASE_URI = "http://%s:%s/rest";
 	
 	public static void main(String[] args) throws Exception {
