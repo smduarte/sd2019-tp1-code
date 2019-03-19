@@ -64,20 +64,6 @@ abstract class RestClient extends RetryClient {
 		}
 	}
 
-	// Get the actual response, when the status matches what was expected, otherwise
-	// return a default value
-	protected <T> Result<T> responseContents(Response r, Status expected, T orElse, GenericType<T> gtype) {
-		try {
-			StatusType status = r.getStatusInfo();
-			if (status.equals(expected))
-				return ok(r.readEntity(gtype));
-			else
-				return ok(orElse);
-		} finally {
-			r.close();
-		}
-	}
-
 	@Override
 	public String toString() {
 		return uri.toString();
