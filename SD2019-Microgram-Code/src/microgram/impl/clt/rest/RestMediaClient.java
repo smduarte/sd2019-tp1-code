@@ -27,8 +27,8 @@ public class RestMediaClient extends RestClient implements Media {
 		});
 	}
 
-	public Result<byte[]> download(String id) {
-		Response r = target.path(id)
+	public Result<byte[]> download(String url) {
+		Response r = client.target(url)
 				.request()
 				.accept(MediaType.APPLICATION_OCTET_STREAM)
 				.get();

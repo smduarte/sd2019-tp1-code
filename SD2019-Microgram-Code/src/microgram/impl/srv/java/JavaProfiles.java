@@ -19,9 +19,9 @@ import microgram.impl.srv.rest.RestResource;
 
 public class JavaProfiles extends RestResource implements microgram.api.java.Profiles {
 
-	Map<String, Profile> users = new HashMap<>();
-	Map<String, Set<String>> followers = new HashMap<>();
-	Map<String, Set<String>> following = new HashMap<>();
+	protected Map<String, Profile> users = new HashMap<>();
+	protected Map<String, Set<String>> followers = new HashMap<>();
+	protected Map<String, Set<String>> following = new HashMap<>();
 	
 	
 	@Override
@@ -39,7 +39,7 @@ public class JavaProfiles extends RestResource implements microgram.api.java.Pro
 	public Result<Void> createProfile(Profile profile) {
 		Profile res = users.putIfAbsent( profile.getUserId(), profile );
 		if( res != null ) 
-			return error(NOT_FOUND);
+			return error(CONFLICT);
 		
 		followers.put( profile.getUserId(), new HashSet<>());
 		following.put( profile.getUserId(), new HashSet<>());
@@ -67,10 +67,12 @@ public class JavaProfiles extends RestResource implements microgram.api.java.Pro
 			return error(NOT_FOUND);
 		
 		if( isFollowing ) {
-			if( ! s1.add( userId2 ) || ! s2.add( userId1 ) )
+			boolean added1 = s1.add(userId2 ), added2 = s2.add( userId1 );
+			if( ! added1 || ! added2 )
 				return error(CONFLICT);		
 		} else {
-			if( ! s1.remove( userId2 ) || ! s2.remove( userId1 ) )
+			boolean removed1 = s1.remove(userId2), removed2 = s2.remove( userId1);
+			if( ! removed1 || ! removed2 )
 				return error(NOT_FOUND);					
 		}
 		return ok();
@@ -81,7 +83,7 @@ public class JavaProfiles extends RestResource implements microgram.api.java.Pro
 
 		Set<String> s1 = following.get( userId1 );
 		Set<String> s2 = followers.get( userId2 );
-
+		
 		if( s1 == null || s2 == null)
 			return error(NOT_FOUND);
 		else
