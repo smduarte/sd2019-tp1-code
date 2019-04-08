@@ -22,7 +22,7 @@ public class RestResource {
 	/**
 	 * Translates a Result<T> to a HTTP Status code
 	 */
-	static private Status statusCode( Result<?> result ) {
+	static protected Status statusCode( Result<?> result ) {
 		switch( result.error() ) {
 			case NOT_FOUND: 
 				return Status.NOT_FOUND;
