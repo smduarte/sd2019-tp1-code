@@ -51,26 +51,23 @@ public class JavaPosts implements Posts {
 			if (posts == null)
 				userPosts.put(post.getOwnerId(), posts = new LinkedHashSet<>());
 			posts.add(postId);
-
-			return ok(postId);
 		}
-		else
-			return error(CONFLICT);
+		return ok(postId);
 	}
 
 	@Override
 	public Result<Void> like(String postId, String userId, boolean isLiked) {
-		
+
 		Set<String> res = likes.get(postId);
 		if (res == null)
-			return error( NOT_FOUND );
+			return error(NOT_FOUND);
 
 		if (isLiked) {
 			if (!res.add(userId))
-				return error( CONFLICT );
+				return error(CONFLICT);
 		} else {
 			if (!res.remove(userId))
-				return error( NOT_FOUND );
+				return error(NOT_FOUND);
 		}
 
 		getPost(postId).value().setLikes(res.size());
@@ -80,11 +77,11 @@ public class JavaPosts implements Posts {
 	@Override
 	public Result<Boolean> isLiked(String postId, String userId) {
 		Set<String> res = likes.get(postId);
-		
+
 		if (res != null)
 			return ok(res.contains(userId));
 		else
-			return error( NOT_FOUND );
+			return error(NOT_FOUND);
 	}
 
 	@Override
@@ -93,10 +90,9 @@ public class JavaPosts implements Posts {
 		if (res != null)
 			return ok(new ArrayList<>(res));
 		else
-			return error( NOT_FOUND );
+			return error(NOT_FOUND);
 	}
-	
-	
+
 	@Override
 	public Result<List<String>> getFeed(String userId) {
 		return error(NOT_IMPLEMENTED);
