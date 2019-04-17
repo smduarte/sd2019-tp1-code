@@ -14,3 +14,5 @@ profiles-soap-service-mainclass=
 profiles-soap-service-port=
 
 discovery-multicast-address=226.226.226.226:2266
+
+uses-kafka=false
